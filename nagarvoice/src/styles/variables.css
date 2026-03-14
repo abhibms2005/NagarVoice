@@ -1,0 +1,250 @@
+/* ============================================
+   NagarVoice — Premium Design System v2.0
+   ₹10 Crore Startup Grade Design Tokens
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+Kannada:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ─── Brand Colors ─── */
+  --color-primary: #4361ee;
+  --color-primary-50: #eef1ff;
+  --color-primary-100: #dde4ff;
+  --color-primary-200: #c2ccff;
+  --color-primary-300: #97a6ff;
+  --color-primary-400: #6b7fff;
+  --color-primary-500: #4361ee;
+  --color-primary-600: #3448d4;
+  --color-primary-700: #2935ab;
+  --color-primary-800: #262f8b;
+  --color-primary-900: #242c6f;
+  --color-primary-alpha: rgba(67, 97, 238, 0.12);
+  --color-primary-alpha-heavy: rgba(67, 97, 238, 0.24);
+
+  --color-secondary: #f7b801;
+  --color-secondary-50: #fff9e6;
+  --color-secondary-100: #fff0b3;
+  --color-secondary-200: #ffe680;
+  --color-secondary-500: #f7b801;
+  --color-secondary-600: #d4a000;
+
+  --color-accent: #7209b7;
+  --color-accent-50: #f3e6ff;
+  --color-accent-100: #dbb3ff;
+  --color-accent-500: #7209b7;
+  --color-accent-600: #5c0793;
+
+  /* ─── Status / Semantic Colors ─── */
+  --color-success: #06d6a0;
+  --color-success-50: #e6fcf5;
+  --color-success-100: #b3f5dc;
+  --color-success-bg: rgba(6, 214, 160, 0.10);
+  --color-warning: #fca311;
+  --color-warning-50: #fff8e6;
+  --color-warning-100: #ffeab3;
+  --color-warning-bg: rgba(252, 163, 17, 0.10);
+  --color-danger: #ef233c;
+  --color-danger-50: #fde8eb;
+  --color-danger-100: #f9b3bc;
+  --color-danger-bg: rgba(239, 35, 60, 0.10);
+  --color-info: #4cc9f0;
+  --color-info-50: #e6f8fd;
+  --color-info-bg: rgba(76, 201, 240, 0.10);
+
+  /* ─── Issue Status Colors ─── */
+  --status-reported: #ef233c;
+  --status-acknowledged: #fca311;
+  --status-in-progress: #4cc9f0;
+  --status-resolved: #06d6a0;
+  --status-escalated: #7209b7;
+
+  /* ─── Priority Colors ─── */
+  --priority-critical: #d00000;
+  --priority-high: #ef233c;
+  --priority-medium: #fca311;
+  --priority-low: #06d6a0;
+
+  /* ─── Light Theme Surfaces ─── */
+  --bg-primary: #f5f6fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #ebedf3;
+  --bg-card: rgba(255, 255, 255, 0.72);
+  --bg-card-hover: rgba(255, 255, 255, 0.88);
+  --bg-card-solid: #ffffff;
+  --bg-input: #f0f1f6;
+  --bg-nav: rgba(255, 255, 255, 0.78);
+  --bg-modal: rgba(15, 15, 30, 0.55);
+  --bg-glass: rgba(255, 255, 255, 0.60);
+  --bg-glass-heavy: rgba(255, 255, 255, 0.80);
+  --bg-hero-start: #4361ee;
+  --bg-hero-end: #7209b7;
+  --bg-page: #f5f6fa;
+
+  --text-primary: #1a1d2e;
+  --text-secondary: #5f6580;
+  --text-tertiary: #9ca0b3;
+  --text-inverse: #ffffff;
+  --text-on-primary: #ffffff;
+  --text-link: #4361ee;
+
+  --border-color: rgba(0, 0, 0, 0.06);
+  --border-light: rgba(0, 0, 0, 0.04);
+  --border-glass: rgba(255, 255, 255, 0.18);
+
+  /* ─── Elevation / Shadows ─── */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-xl: 0 16px 56px rgba(0,0,0,0.10), 0 4px 16px rgba(0,0,0,0.05);
+  --shadow-2xl: 0 24px 72px rgba(0,0,0,0.14);
+  --shadow-primary: 0 4px 20px rgba(67, 97, 238, 0.22);
+  --shadow-primary-lg: 0 8px 32px rgba(67, 97, 238, 0.30);
+  --shadow-card: 0 2px 12px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.03);
+  --shadow-inset: inset 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-glow: 0 0 24px rgba(67, 97, 238, 0.18);
+
+  /* ─── Typography ─── */
+  --font-family: 'Plus Jakarta Sans', 'Noto Sans Kannada', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* 8px based type scale */
+  --font-size-2xs: 0.625rem;   /* 10px */
+  --font-size-xs: 0.75rem;     /* 12px */
+  --font-size-sm: 0.8125rem;   /* 13px */
+  --font-size-base: 0.875rem;  /* 14px */
+  --font-size-md: 0.9375rem;   /* 15px */
+  --font-size-lg: 1rem;        /* 16px */
+  --font-size-xl: 1.125rem;    /* 18px */
+  --font-size-2xl: 1.375rem;   /* 22px */
+  --font-size-3xl: 1.75rem;    /* 28px */
+  --font-size-4xl: 2.25rem;    /* 36px */
+  --font-size-5xl: 3rem;       /* 48px */
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  --line-height-none: 1;
+  --line-height-tight: 1.2;
+  --line-height-snug: 1.35;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.65;
+
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.02em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-caps: 0.08em;
+
+  /* ─── 8px Grid Spacing ─── */
+  --space-0: 0;
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-7: 1.75rem;   /* 28px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-14: 3.5rem;   /* 56px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+
+  /* ─── Border Radius ─── */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-full: 50%;
+  --radius-pill: 100px;
+
+  /* ─── Motion ─── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --duration-instant: 100ms;
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+  --duration-page: 350ms;
+
+  --transition-fast: var(--duration-fast) var(--ease-out);
+  --transition-base: var(--duration-base) var(--ease-out);
+  --transition-slow: var(--duration-slow) var(--ease-out);
+  --transition-spring: var(--duration-slow) var(--ease-spring);
+
+  /* ─── Z-Index Scale ─── */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 150;
+  --z-nav: 200;
+  --z-modal-backdrop: 290;
+  --z-modal: 300;
+  --z-toast: 400;
+  --z-tooltip: 500;
+  --z-top: 999;
+
+  /* ─── Layout ─── */
+  --max-width: 480px;
+  --nav-height: 56px;
+  --bottom-nav-height: 68px;
+  --header-height: 56px;
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ─── Dark Theme ─── */
+[data-theme="dark"] {
+  --bg-primary: #0c0f1a;
+  --bg-secondary: #141829;
+  --bg-tertiary: #1c2038;
+  --bg-card: rgba(20, 24, 41, 0.72);
+  --bg-card-hover: rgba(28, 32, 56, 0.80);
+  --bg-card-solid: #1a1e33;
+  --bg-input: #1c2038;
+  --bg-nav: rgba(12, 15, 26, 0.85);
+  --bg-glass: rgba(20, 24, 41, 0.60);
+  --bg-glass-heavy: rgba(20, 24, 41, 0.85);
+  --bg-page: #0c0f1a;
+
+  --text-primary: #eef0f8;
+  --text-secondary: #8b90a8;
+  --text-tertiary: #545876;
+
+  --border-color: rgba(255, 255, 255, 0.06);
+  --border-light: rgba(255, 255, 255, 0.04);
+  --border-glass: rgba(255, 255, 255, 0.08);
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.25);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.35);
+  --shadow-xl: 0 16px 56px rgba(0,0,0,0.4);
+  --shadow-card: 0 2px 12px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.04);
+  --shadow-inset: inset 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* ─── High Contrast Accessibility ─── */
+[data-contrast="high"] {
+  --text-primary: #000000;
+  --text-secondary: #222222;
+  --border-color: rgba(0,0,0,0.2);
+}
+[data-contrast="high"][data-theme="dark"] {
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --border-color: rgba(255,255,255,0.2);
+}

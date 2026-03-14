@@ -1,0 +1,61 @@
+.map-page {
+  display: flex; flex-direction: column;
+  height: 100vh; height: 100dvh;
+  background: var(--bg-page);
+}
+
+.map-header {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-glass-heavy);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 200;
+}
+.map-title { flex: 1; font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin: 0; }
+.map-count { font-size: var(--font-size-2xs); }
+
+.map-filters {
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg-nav);
+  backdrop-filter: blur(12px);
+  z-index: 200;
+}
+.filter-scroll {
+  display: flex; gap: var(--space-2);
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.filter-scroll::-webkit-scrollbar { display: none; }
+
+.map-container {
+  flex: 1; position: relative;
+}
+
+.map-legend {
+  position: absolute; bottom: calc(var(--bottom-nav-height) + 16px); right: 12px;
+  z-index: 100; padding: var(--space-3); display: flex; flex-direction: column; gap: 6px;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+.legend-label { font-size: 10px; font-weight: var(--font-weight-medium); color: var(--text-secondary); text-transform: capitalize; }
+
+/* Bottom Sheet Content */
+.sheet-content { padding: var(--space-4) var(--space-5) var(--space-8); }
+.sheet-title { font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); margin-bottom: var(--space-2); }
+.sheet-location { font-size: var(--font-size-sm); color: var(--text-secondary); margin-bottom: var(--space-1); }
+.sheet-meta { font-size: var(--font-size-xs); color: var(--text-tertiary); }
+
+.ward-info-card { border-left: 3px solid var(--color-secondary); }
+
+/* Leaflet overrides */
+.leaflet-container { font-family: var(--font-family) !important; background: var(--bg-page) !important; }
+.leaflet-popup-content-wrapper {
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+.leaflet-control-zoom a {
+  background: var(--bg-glass-heavy) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+  backdrop-filter: blur(8px);
+}
