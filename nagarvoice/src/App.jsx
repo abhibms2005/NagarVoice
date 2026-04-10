@@ -3,6 +3,7 @@ import { I18nProvider } from './i18n/I18nContext';
 import BottomNav from './components/BottomNav';
 import Onboarding from './pages/Onboarding';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Home from './pages/Home';
 import ReportIssue from './pages/ReportIssue';
 import IssueDetail from './pages/IssueDetail';
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/" element={<AppLayout hideNav><Onboarding /></AppLayout>} />
           <Route path="/onboarding" element={<AppLayout hideNav><Onboarding /></AppLayout>} />
           <Route path="/login" element={<AppLayout hideNav><Login /></AppLayout>} />
+          <Route path="/register" element={<AppLayout hideNav><Register /></AppLayout>} />
           <Route path="/sos" element={<AppLayout hideNav><SOSMode /></AppLayout>} />
           <Route path="/chat" element={<AppLayout hideNav><ChatAssistant /></AppLayout>} />
           <Route path="/admin" element={<AppLayout hideNav><AdminDashboard /></AppLayout>} />

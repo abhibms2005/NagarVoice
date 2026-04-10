@@ -4,7 +4,40 @@ import { getUserByPhone } from '../data/sampleUsers';
 const STORAGE_KEY = 'nagarvoice_issues';
 const USER_KEY = 'nagarvoice_user';
 const NOTIF_KEY = 'nagarvoice_notifications';
+const REGISTERED_USERS_KEY = 'nagarvoice_registered_users';
 const OTP_CODE = '1234';
+
+function getRegisteredUsers() {
+  try {
+    const stored = localStorage.getItem(REGISTERED_USERS_KEY);
+    if (!stored) return [];
+    const parsed = JSON.parse(stored);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveRegisteredUsers(users) {
+  localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(users));
+}
+
+function getZoneFromWard(ward = '') {
+  const south = ['Koramangala', 'Jayanagar', 'HSR Layout', 'BTM Layout', 'Electronic City', 'Bannerghatta Road', 'Bommanahalli', 'JP Nagar', 'Basavanagudi', 'Kempegowda Nagar'];
+  const east = ['Indiranagar', 'Whitefield', 'Marathahalli', 'KR Puram', 'Sarjapur Road', 'Shantinagar', 'Shivajinagar'];
+  const north = ['Hebbal', 'Yelahanka'];
+  if (south.includes(ward)) return 'South';
+  if (east.includes(ward)) return 'East';
+  if (north.includes(ward)) return 'North';
+  return 'West';
+}
+
+function getAvatarFromName(name = 'Citizen') {
+  const parts = String(name).trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return 'C';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[1][0]).toUpperCase();
+}
 
 function getIssues() {
   try {
@@ -32,13 +65,19 @@ export const issueService = {
 
   getStats() {
     const issues = getIssues();
+    const currentUser = authService.getCurrentUser();
+    const isSampleUser = currentUser?.phone ? !!getUserByPhone(currentUser.phone) : false;
+    const scopedIssues = currentUser && !isSampleUser
+      ? issues.filter(i => i.reportedBy === currentUser.id)
+      : issues;
+
     return {
-      total: issues.length,
-      reported: issues.filter(i => i.status === 'reported').length,
-      acknowledged: issues.filter(i => i.status === 'acknowledged').length,
-      inProgress: issues.filter(i => i.status === 'in-progress').length,
-      resolved: issues.filter(i => i.status === 'resolved').length,
-      escalated: issues.filter(i => i.status === 'escalated').length,
+      total: scopedIssues.length,
+      reported: scopedIssues.filter(i => i.status === 'reported').length,
+      acknowledged: scopedIssues.filter(i => i.status === 'acknowledged').length,
+      inProgress: scopedIssues.filter(i => i.status === 'in-progress').length,
+      resolved: scopedIssues.filter(i => i.status === 'resolved').length,
+      escalated: scopedIssues.filter(i => i.status === 'escalated').length,
     };
   },
 
@@ -193,12 +232,78 @@ export const authService = {
     return otp === OTP_CODE;
   },
 
+  getRegisteredUsers() {
+    return getRegisteredUsers();
+  },
+
+  getRegisteredUserByPhone(phone) {
+    const cleanPhone = String(phone || '').replace(/\D/g, '');
+    return getRegisteredUsers().find(u => u.phone === cleanPhone) || null;
+  },
+
+  registerCitizen(details) {
+    const phone = String(details?.phone || '').replace(/\D/g, '');
+    if (!/^\d{10}$/.test(phone)) {
+      throw new Error('Please enter a valid 10-digit phone number.');
+    }
+    if (getUserByPhone(phone)) {
+      throw new Error('This number is reserved for demo users. Please use another phone number.');
+    }
+    const existing = this.getRegisteredUserByPhone(phone);
+    if (existing) {
+      throw new Error('An account already exists for this phone number. Please login instead.');
+    }
+
+    const name = String(details?.name || '').trim();
+    const ward = String(details?.ward || '').trim();
+    const address = String(details?.address || '').trim();
+    const pincode = String(details?.pincode || '').trim();
+    const email = String(details?.email || '').trim();
+    const area = String(details?.area || '').trim();
+
+    const user = {
+      id: 'user_' + phone,
+      phone,
+      name: name || 'Citizen',
+      ward: ward || 'Koramangala',
+      zone: getZoneFromWard(ward),
+      avatar: getAvatarFromName(name),
+      avatarColor: '#4361ee',
+      civicScore: 0,
+      tier: 'New',
+      points: 0,
+      isAdmin: false,
+      badges: [],
+      joinedAt: new Date().toISOString(),
+      issuesReported: 0,
+      issuesResolved: 0,
+      totalUpvotesReceived: 0,
+      email,
+      area,
+      address,
+      pincode,
+      city: 'Bengaluru',
+      bio: '',
+    };
+
+    const users = getRegisteredUsers();
+    users.push(user);
+    saveRegisteredUsers(users);
+    return user;
+  },
+
   login(phone, isAdmin = false) {
     // Check if it's a sample user
     const sampleUser = getUserByPhone(phone);
     if (sampleUser) {
       localStorage.setItem(USER_KEY, JSON.stringify(sampleUser));
       return sampleUser;
+    }
+    // Check registered user
+    const registered = this.getRegisteredUserByPhone(phone);
+    if (registered) {
+      localStorage.setItem(USER_KEY, JSON.stringify(registered));
+      return registered;
     }
     // Generic user
     const user = {
@@ -209,11 +314,11 @@ export const authService = {
       zone: 'South',
       avatar: 'C',
       avatarColor: '#4361ee',
-      civicScore: 100,
-      tier: 'Bronze',
-      points: 100,
+      civicScore: 0,
+      tier: 'New',
+      points: 0,
       isAdmin,
-      badges: ['First Report'],
+      badges: [],
       joinedAt: new Date().toISOString(),
       issuesReported: 0,
       issuesResolved: 0,

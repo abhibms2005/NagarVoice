@@ -50,13 +50,19 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const u = authService.getCurrentUser();
+      if (!u) {
+        navigate('/login', { replace: true });
+        return;
+      }
       setUser(u);
-      if (u) setMyIssues(issueService.getUserIssues(u.id));
+      setMyIssues(issueService.getUserIssues(u.id));
       setLoading(false);
     }, 300);
-  }, []);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
 
   const toggleTheme = () => {
     const next = theme === 'light' ? 'dark' : 'light';
@@ -95,7 +101,7 @@ export default function Profile() {
     );
   }
 
-  if (!user) return <div className="page"><p>{t('common.loading')}</p></div>;
+  if (!user) return null;
 
   const resolvedCount = myIssues.filter(i => i.status === 'resolved').length;
   const tierInfo = getTierForScore(user.civicScore || 0);

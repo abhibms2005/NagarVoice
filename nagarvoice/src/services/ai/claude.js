@@ -210,14 +210,14 @@ Generate a 3-line AI insight about this ward's performance.`;
 export function fallbackCategorize(text, filename = '') {
   const input = (text + ' ' + filename).toLowerCase();
   const categoryKeywords = {
-    pothole: ['pothole', 'hole', 'pit', 'crater', 'road damage', 'road', 'asphalt'],
+    pothole: ['pothole', 'hole', 'pit', 'crater', 'potholes'],
     garbage: ['garbage', 'trash', 'waste', 'dump', 'litter', 'rubbish', 'bin', 'pile'],
     streetlight: ['light', 'lamp', 'streetlight', 'bulb', 'dark', 'pole', 'LED'],
     waterLeak: ['water', 'leak', 'pipe', 'burst', 'flood', 'puddle', 'tap'],
     sewage: ['sewage', 'sewer', 'drain', 'smell', 'overflow', 'manhole'],
     encroachment: ['encroach', 'footpath', 'pavement', 'sidewalk', 'vendor', 'illegal'],
-    roadDamage: ['road', 'crack', 'broken', 'surface', 'cave', 'sinkhole'],
-    treeFall: ['tree', 'branch', 'fallen', 'uprooted', 'storm'],
+    roadDamage: ['road damage', 'road cracked', 'road broken', 'surface', 'cave', 'sinkhole', 'crack', 'asphalt'],
+    treeFall: ['tree', 'treefall', 'tree-fall', 'fallen tree', 'falling tree', 'branch', 'branches', 'uprooted', 'storm', 'trunk', 'blocked by tree'],
     illegalDumping: ['dump', 'illegal', 'construction', 'debris', 'rubble'],
     electricalHazard: ['electric', 'wire', 'shock', 'transformer', 'cable', 'spark'],
     drainage: ['drain', 'waterlog', 'flood', 'gutter', 'clog', 'rainwater'],
@@ -229,14 +229,12 @@ export function fallbackCategorize(text, filename = '') {
     let score = keywords.filter(kw => input.includes(kw)).length;
     if (score > bestScore) { bestScore = score; bestMatch = cat; }
   }
-  if (bestScore === 0) {
-    const common = ['pothole', 'garbage', 'streetlight', 'waterLeak', 'roadDamage'];
-    bestMatch = common[Math.floor(Math.random() * common.length)];
-  }
+  // If we have no signal, do not guess a wrong category.
+  if (bestScore === 0) bestMatch = 'other';
 
   return {
     category: bestMatch,
-    confidence: Math.min(0.95, 0.6 + bestScore * 0.1),
+    confidence: bestScore === 0 ? 0.35 : Math.min(0.95, 0.6 + bestScore * 0.1),
   };
 }
 

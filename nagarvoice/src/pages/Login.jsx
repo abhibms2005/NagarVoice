@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../i18n/I18nContext';
 import { authService } from '../services/issueService';
 import sampleUsers from '../data/sampleUsers';
@@ -8,7 +8,8 @@ import './Login.css';
 export default function Login() {
   const { t, language, switchLanguage } = useI18n();
   const navigate = useNavigate();
-  const [phone, setPhone] = useState('');
+  const location = useLocation();
+  const [phone, setPhone] = useState(location.state?.phone || '');
   const [otp, setOtp] = useState(['', '', '', '']);
   const [step, setStep] = useState('phone'); // phone | otp | loading
   const [error, setError] = useState('');
@@ -124,6 +125,10 @@ export default function Login() {
 
             <button type="button" className="btn btn-ghost btn-full" onClick={handleGuestLogin} style={{marginTop: 12}}>
               {t('login.guestLogin')}
+            </button>
+
+            <button type="button" className="btn btn-secondary btn-full" onClick={() => navigate('/register')} style={{marginTop: 10}}>
+              New in Bengaluru? Register Account
             </button>
           </form>
         ) : (
