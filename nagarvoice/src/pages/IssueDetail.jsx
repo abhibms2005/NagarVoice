@@ -40,6 +40,9 @@ export default function IssueDetail() {
   const [issue, setIssue] = useState(null);
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(true);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -65,6 +68,23 @@ export default function IssueDetail() {
     const updated = issueService.updateStatus(issue.id, 'escalated', 'Escalated by citizen due to delayed response');
     setIssue({...updated});
   };
+
+  // ─── Delete complaint logic ───
+  const handleDeleteConfirm = () => {
+    setDeleting(true);
+    setTimeout(() => {
+      issueService.deleteIssue(issue.id);
+      setDeleting(false);
+      setShowDeleteModal(false);
+      setDeleteSuccess(true);
+      // Redirect after showing success toast
+      setTimeout(() => {
+        navigate('/home', { replace: true });
+      }, 1800);
+    }, 800);
+  };
+
+  const isOwner = user && issue && !user.isAdmin && issue.reportedBy === user.id;
 
   const whatsappText = issue ? encodeURIComponent(`🚨 ${issue.title}\n📍 ${issue.location.address}\n\nTrack: ${window.location.href}`) : '';
   const cat = issue ? categories.find(c => c.id === issue.category) : null;
@@ -93,6 +113,49 @@ export default function IssueDetail() {
 
   return (
     <div className="page detail-page">
+      {/* Delete Success Toast */}
+      {deleteSuccess && (
+        <div className="delete-toast">
+          <span className="delete-toast-icon">✅</span>
+          <span>Complaint deleted successfully</span>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <>
+          <div className="modal-backdrop" onClick={() => !deleting && setShowDeleteModal(false)}></div>
+          <div className="modal-container">
+            <div className="delete-modal glass-card-heavy">
+              <div className="delete-modal-icon">🗑️</div>
+              <h3 className="delete-modal-title">Delete Complaint?</h3>
+              <p className="delete-modal-text">
+                Are you sure you want to delete this complaint? This cannot be undone.
+              </p>
+              <p className="delete-modal-text-kn">
+                ನೀವು ಈ ದೂರನ್ನು ಅಳಿಸಲು ಬಯಸುತ್ತೀರಾ? ಇದನ್ನು ರದ್ದುಗೊಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.
+              </p>
+              <div className="delete-modal-actions">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setShowDeleteModal(false)}
+                  disabled={deleting}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn btn-danger"
+                  onClick={handleDeleteConfirm}
+                  disabled={deleting}
+                >
+                  {deleting ? <><span className="spinner"></span> Deleting...</> : '🗑️ Delete'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* Top Bar */}
       <div className="detail-topbar">
         <button className="btn btn-icon btn-ghost" onClick={() => navigate(-1)}>←</button>
@@ -200,6 +263,19 @@ export default function IssueDetail() {
           <div className="meta-item"><span className="meta-label">Last Updated</span><span className="meta-value">{new Date(issue.updatedAt).toLocaleDateString()}</span></div>
         </div>
       </div>
+
+      {/* Delete Button — Only visible to the original reporter */}
+      {isOwner && (
+        <div className="section delete-section">
+          <button
+            className="btn btn-delete-complaint"
+            onClick={() => setShowDeleteModal(true)}
+          >
+            🗑️ Delete Complaint
+          </button>
+          <p className="delete-hint">Only you (the original reporter) can delete this complaint</p>
+        </div>
+      )}
     </div>
   );
 }

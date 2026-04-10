@@ -12,7 +12,8 @@ export default function ReportIssue() {
   const navigate = useNavigate();
   const location = useLocation();
   const user = authService.getCurrentUser();
-  const fileRef = useRef();
+  const cameraRef = useRef();
+  const galleryRef = useRef();
 
   const [step, setStep] = useState(1); // 3-step flow
   const [photo, setPhoto] = useState(null);
@@ -133,17 +134,59 @@ export default function ReportIssue() {
           <h2 className="step-title">📷 Capture the Issue</h2>
           <p className="step-desc">Take a photo or select from gallery</p>
 
-          <div className="photo-upload" onClick={() => fileRef.current?.click()}>
-            {photoPreview ? (
+          {/* Photo preview area */}
+          {photoPreview ? (
+            <div className="photo-upload photo-upload-has-image">
               <img src={photoPreview} alt="Issue" className="photo-preview" />
-            ) : (
+              <div className="photo-overlay">
+                <span className="photo-change-text">Tap buttons below to change</span>
+              </div>
+            </div>
+          ) : (
+            <div className="photo-upload">
               <div className="photo-placeholder">
                 <span className="photo-icon">📷</span>
-                <p>Tap to upload photo</p>
+                <p>Use the buttons below to add a photo</p>
               </div>
-            )}
-            <input ref={fileRef} type="file" accept="image/*" capture="environment" onChange={handlePhoto} hidden />
+            </div>
+          )}
+
+          {/* Two separate photo action buttons */}
+          <div className="photo-actions">
+            <button
+              type="button"
+              className="btn photo-action-btn photo-action-camera"
+              onClick={() => cameraRef.current?.click()}
+            >
+              <span className="photo-action-icon">📷</span>
+              <span>Take Photo</span>
+            </button>
+            <button
+              type="button"
+              className="btn photo-action-btn photo-action-gallery"
+              onClick={() => galleryRef.current?.click()}
+            >
+              <span className="photo-action-icon">🖼️</span>
+              <span>Choose from Gallery</span>
+            </button>
           </div>
+
+          {/* Hidden file inputs */}
+          <input
+            ref={cameraRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handlePhoto}
+            hidden
+          />
+          <input
+            ref={galleryRef}
+            type="file"
+            accept="image/*"
+            onChange={handlePhoto}
+            hidden
+          />
 
           {aiAnalyzing && (
             <div className="ai-analyzing glass-card">

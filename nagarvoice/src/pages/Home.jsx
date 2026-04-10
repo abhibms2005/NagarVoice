@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useI18n } from '../i18n/I18nContext';
-import { issueService, authService, notificationService } from '../services/issueService';
+import { issueService, authService, notificationService, resolutionNotifService } from '../services/issueService';
 import { getSmartSuggestions } from '../services/ai';
 import { categories } from '../data/categories';
 import { getTierForScore } from '../data/sampleUsers';
@@ -69,6 +69,8 @@ export default function Home() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [confetti, setConfetti] = useState(false);
+  const [resolvedNotifs, setResolvedNotifs] = useState([]);
+  const [showResolvedModal, setShowResolvedModal] = useState(false);
   const unreadCount = notificationService.getUnreadCount();
   const tierInfo = user ? getTierForScore(user.civicScore || 0) : null;
 
@@ -84,7 +86,24 @@ export default function Home() {
     // Check for confetti
     const confettiId = localStorage.getItem('nagarvoice_confetti');
     if (confettiId) { setConfetti(true); localStorage.removeItem('nagarvoice_confetti'); setTimeout(() => setConfetti(false), 3500); }
+
+    // Check for resolution notifications
+    if (user?.id) {
+      const unseen = resolutionNotifService.getUnseenNotifications(user.id);
+      if (unseen.length > 0) {
+        setResolvedNotifs(unseen);
+        setShowResolvedModal(true);
+      }
+    }
   }, []);
+
+  const handleDismissResolved = () => {
+    if (user?.id) {
+      resolutionNotifService.markNotificationsAsSeen(user.id);
+    }
+    setShowResolvedModal(false);
+    setResolvedNotifs([]);
+  };
 
   if (loading) {
     return (
@@ -120,6 +139,52 @@ export default function Home() {
             }}></div>
           ))}
         </div>
+      )}
+
+      {/* Resolution Notification Modal */}
+      {showResolvedModal && resolvedNotifs.length > 0 && (
+        <>
+          <div className="resolved-modal-backdrop" onClick={handleDismissResolved}></div>
+          <div className="resolved-modal-container">
+            <div className="resolved-modal">
+              <div className="resolved-modal-glow"></div>
+              <div className="resolved-modal-content">
+                {/* Success checkmark */}
+                <div className="resolved-check-ring">
+                  <div className="resolved-check-circle">
+                    <span className="resolved-check-mark">✓</span>
+                  </div>
+                </div>
+
+                <h2 className="resolved-modal-title">Issue Resolved! 🎉</h2>
+                <p className="resolved-modal-subtitle">ಸಮಸ್ಯೆ ಪರಿಹರಿಸಲಾಗಿದೆ!</p>
+
+                {/* Notification list */}
+                <div className="resolved-notif-list">
+                  {resolvedNotifs.map((n, i) => (
+                    <div key={n.id || i} className="resolved-notif-item">
+                      <div className="resolved-notif-icon">✅</div>
+                      <div className="resolved-notif-body">
+                        <p className="resolved-notif-title">{n.issueTitle || 'Civic Issue'}</p>
+                        <p className="resolved-notif-msg">
+                          Your complaint about <strong>{n.issueCategory}</strong> at <strong>{n.issueLocation}</strong> has been solved.
+                          Thank YOU for helping make Bangalore better!
+                        </p>
+                        <p className="resolved-notif-time">
+                          {new Date(n.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button className="btn btn-primary btn-full btn-lg resolved-dismiss-btn" onClick={handleDismissResolved}>
+                  Great, Thanks! 🙏
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
       )}
 
       {/* Header */}

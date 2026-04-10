@@ -1,6 +1,7 @@
 .admin-page { background: var(--bg-page); padding: var(--space-5) var(--space-4); }
 
 .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); }
+.admin-header-actions { display: flex; gap: var(--space-2); align-items: center; }
 .admin-title { font-size: var(--font-size-xl); font-weight: var(--font-weight-extrabold); }
 .admin-subtitle { font-size: var(--font-size-xs); color: var(--text-tertiary); margin-top: 2px; }
 
@@ -16,9 +17,10 @@
   border-radius: var(--radius-lg);
   background: var(--bg-glass); backdrop-filter: blur(12px);
   border: 1px solid var(--border-glass);
-  transition: transform var(--transition-base);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  box-shadow: var(--shadow-sm);
 }
-.admin-stat-card:hover { transform: translateY(-2px); }
+.admin-stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .admin-stat-value { display: block; font-size: var(--font-size-2xl); font-weight: var(--font-weight-extrabold); }
 .admin-stat-label { font-size: var(--font-size-2xs); color: var(--text-tertiary); text-transform: uppercase; letter-spacing: var(--letter-spacing-caps); }
 
@@ -75,7 +77,156 @@
 .select-resolved { background: var(--color-success-bg); color: var(--status-resolved); border-color: rgba(6,214,160,0.2); }
 .select-escalated { background: rgba(114,9,183,0.1); color: var(--status-escalated); border-color: rgba(114,9,183,0.2); }
 
-/* Ward Summary */
+/* ─── Ward Selection Screen ─── */
+.ward-select-header { margin-bottom: var(--space-4); }
+
+.ward-search-bar { margin-bottom: var(--space-5); }
+.ward-search-bar .input-field {
+  border-radius: var(--radius-pill);
+  padding-left: var(--space-5);
+}
+
+.ward-zone-section { margin-bottom: var(--space-6); }
+
+.ward-zone-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ward-zone-count {
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-normal);
+  color: var(--text-tertiary);
+  margin-left: var(--space-2);
+  background: var(--bg-tertiary);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.ward-select-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+@media (min-width: 420px) {
+  .ward-select-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.ward-card {
+  position: relative;
+  padding: var(--space-4);
+  border-radius: var(--radius-xl);
+  background: var(--zone-bg, var(--bg-glass));
+  border: 1.5px solid var(--zone-border, var(--border-glass));
+  cursor: pointer;
+  transition: all 0.3s var(--ease-spring);
+  text-align: left;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.ward-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--zone-accent, var(--color-primary));
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.ward-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--zone-accent, var(--color-primary));
+}
+
+.ward-card:hover::before { opacity: 1; }
+
+.ward-card:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.ward-card-zone-dot {
+  width: 8px; height: 8px;
+  border-radius: var(--radius-full);
+  position: absolute;
+  top: var(--space-3); right: var(--space-3);
+  box-shadow: 0 0 6px currentColor;
+}
+
+.ward-card-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  line-height: var(--line-height-tight);
+}
+
+.ward-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ward-card-zone {
+  font-size: var(--font-size-2xs);
+  color: var(--text-tertiary);
+  font-weight: var(--font-weight-medium);
+}
+
+.ward-card-count {
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--zone-accent, var(--color-primary));
+  background: var(--zone-bg, var(--color-primary-alpha));
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+}
+
+/* ─── AI Notification Banner ─── */
+.ai-notif-banner {
+  border-left: 3px solid var(--color-primary);
+  animation: fadeInUp 0.4s var(--ease-out);
+}
+
+.ai-notif-banner-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ai-notif-pulse {
+  width: 10px; height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  animation: pulse 1.5s ease infinite;
+  flex-shrink: 0;
+}
+
+.ai-notif-list {
+  margin-top: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.ai-notif-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-alpha);
+}
+
+/* Ward Summary (legacy) */
 .ward-summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
 .ward-summary-card { padding: var(--space-4); }
 .ward-mini-stats { display: flex; justify-content: space-between; margin-top: var(--space-2); }

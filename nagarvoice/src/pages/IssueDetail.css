@@ -78,3 +78,141 @@
 .meta-item:nth-last-child(-n+2) { border-bottom: none; }
 .meta-label { display: block; font-size: var(--font-size-2xs); color: var(--text-tertiary); text-transform: uppercase; letter-spacing: var(--letter-spacing-caps); margin-bottom: 2px; }
 .meta-value { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); }
+
+/* ─── Delete Complaint Button ─── */
+.delete-section {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-light);
+  text-align: center;
+}
+
+.btn-delete-complaint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-xl);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  background: rgba(239, 35, 60, 0.06);
+  color: #ef233c;
+  border: 1.5px solid rgba(239, 35, 60, 0.2);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-spring);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-delete-complaint:hover {
+  background: rgba(239, 35, 60, 0.12);
+  border-color: rgba(239, 35, 60, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(239, 35, 60, 0.15);
+}
+
+.btn-delete-complaint:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.delete-hint {
+  font-size: var(--font-size-2xs);
+  color: var(--text-tertiary);
+  margin-top: var(--space-2);
+}
+
+/* ─── Delete Confirmation Modal ─── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-modal);
+  z-index: var(--z-modal-backdrop);
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  padding: var(--space-4);
+  animation: fadeIn 0.2s ease;
+}
+
+.delete-modal {
+  width: 100%;
+  max-width: 360px;
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+  border-radius: var(--radius-2xl);
+  background: var(--bg-card-solid);
+  box-shadow: var(--shadow-2xl);
+  animation: scaleIn 0.3s var(--ease-spring);
+}
+
+.delete-modal-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-4);
+  animation: float 3s ease infinite;
+}
+
+.delete-modal-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-3);
+  color: var(--text-primary);
+}
+
+.delete-modal-text {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-1);
+}
+
+.delete-modal-text-kn {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-5);
+}
+
+.delete-modal-actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.delete-modal-actions .btn {
+  flex: 1;
+}
+
+/* ─── Success Toast ─── */
+.delete-toast {
+  position: fixed;
+  top: var(--space-4);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-success);
+  color: white;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  box-shadow: 0 4px 20px rgba(6, 214, 160, 0.35);
+  z-index: var(--z-toast);
+  animation: slideInDown 0.4s var(--ease-spring);
+}
+
+.delete-toast-icon {
+  font-size: 1.1rem;
+}
+
+@keyframes slideInDown {
+  from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+  to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}

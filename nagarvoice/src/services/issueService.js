@@ -217,7 +217,68 @@ export const issueService = {
     );
   },
 
+  deleteIssue(issueId) {
+    const issues = getIssues();
+    const filtered = issues.filter(i => i.id !== issueId);
+    saveIssues(filtered);
+    return true;
+  },
+
   reset() { localStorage.removeItem(STORAGE_KEY); }
+};
+
+// ─── Resolution Notification Service ───
+const RESOLUTION_NOTIF_PREFIX = 'nagarvoice_notifications_';
+
+export const resolutionNotifService = {
+  saveResolutionNotification(userId, issueTitle, issueCategory, issueLocation, issueId) {
+    const key = RESOLUTION_NOTIF_PREFIX + userId;
+    let existing = [];
+    try {
+      const stored = localStorage.getItem(key);
+      existing = stored ? JSON.parse(stored) : [];
+    } catch { existing = []; }
+    existing.push({
+      id: 'rn_' + Date.now(),
+      message: `Your complaint about ${issueCategory} at ${issueLocation} has been resolved. Thank you for making Bangalore better! 🙏`,
+      issueId,
+      issueTitle,
+      issueCategory,
+      issueLocation,
+      timestamp: new Date().toISOString(),
+      seen: false,
+    });
+    localStorage.setItem(key, JSON.stringify(existing));
+  },
+
+  getUnseenNotifications(userId) {
+    const key = RESOLUTION_NOTIF_PREFIX + userId;
+    try {
+      const stored = localStorage.getItem(key);
+      if (!stored) return [];
+      const all = JSON.parse(stored);
+      return all.filter(n => !n.seen);
+    } catch { return []; }
+  },
+
+  getAllNotifications(userId) {
+    const key = RESOLUTION_NOTIF_PREFIX + userId;
+    try {
+      const stored = localStorage.getItem(key);
+      return stored ? JSON.parse(stored) : [];
+    } catch { return []; }
+  },
+
+  markNotificationsAsSeen(userId) {
+    const key = RESOLUTION_NOTIF_PREFIX + userId;
+    try {
+      const stored = localStorage.getItem(key);
+      if (!stored) return;
+      const all = JSON.parse(stored);
+      all.forEach(n => { n.seen = true; });
+      localStorage.setItem(key, JSON.stringify(all));
+    } catch { /* ignore */ }
+  },
 };
 
 export const authService = {

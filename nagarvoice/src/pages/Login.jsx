@@ -53,6 +53,8 @@ export default function Login() {
         navigate('/admin', { replace: true });
       } else {
         localStorage.setItem('nagarvoice_onboarded', 'true');
+        // Flag to trigger resolution notification check on Home page
+        localStorage.setItem('nagarvoice_check_resolved', 'true');
         navigate('/home', { replace: true });
       }
     }, 1200);
