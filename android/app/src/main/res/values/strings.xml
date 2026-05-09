@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">NagarVoice</string>
+    <string name="title_activity_main">NagarVoice</string>
+    <string name="package_name">com.nagarvoice.app</string>
+    <string name="custom_url_scheme">com.nagarvoice.app</string>
+</resources>

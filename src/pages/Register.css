@@ -1,0 +1,111 @@
+.register-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg-page);
+  display: flex;
+  flex-direction: column;
+}
+
+.register-hero {
+  padding: var(--space-10) var(--space-6) var(--space-8);
+  border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
+  text-align: center;
+}
+
+.register-title {
+  color: #fff;
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-2);
+}
+
+.register-subtitle {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: var(--font-size-sm);
+}
+
+.register-form {
+  padding: var(--space-6);
+}
+
+.register-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+}
+
+.input-group-full {
+  grid-column: 1 / -1;
+}
+
+.phone-row {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-input);
+}
+
+.phone-prefix {
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-tertiary);
+  border-right: 1px solid var(--border-color);
+  font-weight: var(--font-weight-semibold);
+}
+
+.phone-input {
+  border: none;
+}
+
+.phone-input:focus {
+  box-shadow: none;
+}
+
+.resident-check {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.resident-check input {
+  margin-top: 2px;
+}
+
+.register-error {
+  margin-top: var(--space-3);
+  color: var(--color-danger);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.register-success {
+  margin-top: var(--space-3);
+  color: var(--color-success);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.register-actions {
+  margin-top: var(--space-6);
+  display: flex;
+  gap: var(--space-3);
+  justify-content: space-between;
+}
+
+.register-actions .btn {
+  flex: 1;
+}
+
+@media (min-width: 760px) {
+  .register-form {
+    max-width: 760px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .register-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
